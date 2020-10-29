@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- <link rel="stylesheet" type="text/css" href="less/contract.less" /> -->
+    <!-- <link rel="stylesheet" href="less/contract.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
+
+    <!-- 引入 Vue 和 Vant 的 JS 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
+    <script type="text/javascript" src="./lib/charting_library/charting_library.min.js"></script>
+    <script type="text/javascript" src="./lib/datafeeds/udf/dist/polyfills.js"></script>
+    <script type="text/javascript" src="./lib/datafeeds/udf/dist/bundle.js"></script>
+    <script src="./lib/jquery.js"></script>
+    <script src="./lib/echarts.min.js"></script>
+    <script type="text/javascript" src="./lib/datafeeds/datafeed.js"></script>
+    <script src="./lib/hammer.min.js"></script>
+    <script type="text/javascript">
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        var setStudy, unsetStudy, MACDEntityId, Wwidget;
+        var datafeed = new FeedBase();
+
+        TradingView.onready(function() { //初始化tradinview
+            var widget = window.tvWidget = new TradingView.widget({
+                fullscreen: false,
+                symbol: 'symbol',
+                interval: '15',
+                https: false,
+                width: '100%',
+                height: 500,
+                container_id: "tv_chart_container",
+                height: getParameterByName('height') / 1.9,
+                //	BEWARE: no trailing slash is expected in feed URL
+                datafeed: datafeed,
+                library_path: "./lib/charting_library/",
+                locale: getParameterByName('lang') || "zh",
+                disabled_features: ["use_localstorage_for_settings", "border_around_the_chart"],
+                preset: "mobile",
+                loading_screen: {
+                    backgroundColor: "#1f2b34",
+                    foregroundColor: "#0CB0FF"
+                },
+                overrides: {
+                    "paneProperties.background": "#121E3E",
+                    "paneProperties.vertGridProperties.color": "#454545",
+                    "paneProperties.horzGridProperties.color": "#454545",
+                    "symbolWatermarkProperties.transparency": 90,
+                    "scalesProperties.textColor": "#AAA",
+                    "paneProperties.legendProperties.showStudyTitles": false,
+                    "paneProperties.legendProperties.showStudyArguments": false,
+                    "paneProperties.legendProperties.showStudyValues": false,
+                }
+            });
+
+            Wwidget = widget;
+            widget.onChartReady(function() {
+                widget.chart().setChartType(3);
+                widget.chart().setResolution('1');
+                // interval
+                $('.secInterval').click(function() {
+                    widget.chart().setChartType(3);
+                    widget.chart().setResolution('1');
+                    widget.chart().resetData();
+                    var AllStudies = widget.chart().getAllStudies();
+
+                    for (var i = 0; i < AllStudies.length - 1; i++) {
+                        widget.chart().removeEntity(AllStudies[i].id);
+                    }
+                })
+
+                $('.interval').click(function() {
+                        widget.chart().setChartType(1);
+                        var inter = $(this).attr('data-inter');
+                        var text = $(this).html();
+                        $('.interval-option').html(text)
+                        $('.interval-option').attr('data-inter', inter)
+                        widget.chart().setResolution(inter);
+                        widget.chart().resetData();
+                        $('.time-list').hide();
+                        var AllStudies = widget.chart().getAllStudies();
+                        if (AllStudies.length == 0) {
+                            var maList = [5, 10, 30, 40];
+                            for (var i = 0; i < maList.length; i++) {
+                                widget.chart().createStudy('Moving average', false, false, [maList[i], "close", 0], function(
+                                    entityId) {
+                                    entityId
+                                });
+                            }
+                        }
+                    })
+                    // Studie
+                var AllStudies = widget.chart().getAllStudies();
+
+                widget.chart().clearMarks();
+                widget.chart().getStudyById(AllStudies[0].id).unmergeDown();
+                var maList = [5, 10, 30, 40];
+                for (var i = 0; i < maList.length; i++) {
+                    widget.chart().createStudy('Moving average', false, false, [maList[i], "close", 0], function(
+                        entityId) {
+                        entityId
+                    });
+
+                }
+
+                setStudy = function() {
+                    widget.chart().createStudy('MACD', false, false, [14, 30, "close", 9], function(entityId) {
+                        MACDEntityId = entityId;
+                    })
+                }
+
+                unsetStudy = function() {
+                    widget.chart().removeEntity(MACDEntityId)
+                }
+            });
+        })
+    </script>
+    <title></title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        html,
+        body,
+        #tv_chart_container {
+            width: 100%;
+            /* padding-top: 20px; */
+            /* margin-top: 20px; */
+            /* height: 100%; */
+        }
+        
+        #tv_chart_container>iframe {
+            width: 100%;
+            height: 300px;
+        }
+        
+        #contract {
+            width: 100%;
+            height: 100vh;
+            background: #121E3E;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contract">
+        <!-- k线 -->
+        <div id="tv_chart_container"></div>
+        <div class="interval"></div>
+
+
+
+    </div>
+</body>
+<script type="text/javascript">
+    var contract = new Vue({
+        el: '#contract',
+        data: {
+            symbol: 'BTC/USDT'
+
+
+
+
+        },
+        methods: {
+
+
+
+        }
+
+    })
+</script>
+
+</html>
