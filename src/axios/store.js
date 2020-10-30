@@ -176,3 +176,10 @@ export async function getGoodsListByKeyword(keyword, page, limit) {
   });
   return await http.post("/api/User/getGoodsListByKeyword", formData);
 }
+//获取商品订单详情
+export async function getShoppingOrderDetail(shopping_order_id) {
+  const formData = createFormData({
+    shopping_order_id
+  });
+  return await http.post("/api/Shoppingorder/getShoppingOrderDetail", formData);
+}

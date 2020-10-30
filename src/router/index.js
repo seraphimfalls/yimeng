@@ -36,6 +36,7 @@ import myOrder from '@/view/store/myOrder'
 import activityDetail from '@/view/store/activityDetail'
 import onSale from "@/view/store/onSale"
 import orderPay from "@/view/store/orderPay"
+import orderDetail from "@/view/store/orderDetail"
 Vue.use(Router)
 
 
@@ -224,6 +225,11 @@ export default new Router({
             path: '/orderPay',
             name: 'orderPay',
             component: orderPay
+        },
+        {
+            path: '/orderDetail',
+            name: 'orderDetail',
+            component: orderDetail
         }
     ]
 })
