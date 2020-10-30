@@ -58,11 +58,13 @@ export default {
 async created() {
     const res = await mineApi.getAccount();
     this.blance = res.data.money;
-    // console.log(res);
-    const Wres = await assetsApi.getWithdrawAddressInfo();
+    let Wres = await assetsApi.getWithdrawAddressInfo();
     const allArr = [{text: "请选择提现账号" , value: 0 }];
-    console.log(allArr)
-    this.option1 = [...allArr,...Wres.data];
+    if(Wres.code == 0){
+      this.$toast(Wres.msg)
+    }else{
+      this.option1 = [...allArr,...Wres.data];
+    }
     const Cres = await assetsApi.getWithdrawConfig();
     this.tixian_times = Cres.data.tixian_times;
     this.tixian_min_amount = Cres.data.tixian_min_amount;

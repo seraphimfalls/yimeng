@@ -8,7 +8,7 @@
       <span>累计释放次数</span>
       <span>累计释放</span>
     </div>
-    <van-list v-model="loading" loading-text="加载中" offset :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" loading-text="加载中" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <div class="list-box" v-for="item in listData" :key="item.id">
         <span>
           {{item.create_ymd}}
@@ -46,7 +46,7 @@ export default {
   methods: {
     async onLoad() {
       let res = await mineApi.orderList(this.page, this.limit);
-  
+      
       if (res.data.length < 10) {
         this.finished = true;
       }

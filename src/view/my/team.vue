@@ -39,7 +39,6 @@ export default {
     this.teamData = res.data.childrenList
     this.team_num = res.data.team_num;
     this.invite_num = res.data.invite_num;
-    console.log(res)
   },
   methods: {}
 };

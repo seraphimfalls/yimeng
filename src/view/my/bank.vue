@@ -21,6 +21,7 @@
 <script>
 import navBar from "../../components/navBar.vue";
 import * as userApi from "../../axios/user.js";
+import * as mineApi from "../../axios/mine.js"
 export default {
   components: {
     navBar

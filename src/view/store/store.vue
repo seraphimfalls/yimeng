@@ -21,25 +21,29 @@
       <van-grid :border="false" :column-num="4">
         <van-grid-item @click="goToSearch">
           <div class="five-icon icon-box1">
-            <span class="iconfont icondanjuqianshou" style="font-size:0.48rem"></span>
+            <van-icon name="goods-collect-o" />
+            <!-- <span class="iconfont icondanjuqianshou" style="font-size:0.48rem"></span> -->
           </div>
           <span class="five-icon-text">商品搜索</span>
         </van-grid-item>
         <van-grid-item @click="goToGoodList">
           <div class="five-icon icon-box2">
-            <span class="iconfont iconzhihuan" style="font-size:0.48rem"></span>
+            <van-icon name="orders-o" />
+            <!-- <span class="iconfont iconzhihuan" style="font-size:0.48rem"></span> -->
           </div>
           <span class="five-icon-text">商品分类</span>
         </van-grid-item>
         <van-grid-item @click="goToHotGoodList">
           <div class="five-icon icon-box3">
-            <van-icon name="after-sale" />
+            <!-- <van-icon name="after-sale" /> -->
+            <van-icon name="hot-sale-o" />
           </div>
           <span class="five-icon-text">特卖活动</span>
         </van-grid-item>
         <van-grid-item @click="goToOrder">
           <div class="five-icon icon-box4">
-            <span class="iconfont iconrichscan_icon" style="font-size:0.42rem"></span>
+            <!-- <span class="iconfont iconrichscan_icon" style="font-size:0.42rem"></span> -->
+            <van-icon name="records" />
           </div>
           <span class="five-icon-text">我的订单</span>
         </van-grid-item>

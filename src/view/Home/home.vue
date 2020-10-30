@@ -59,7 +59,7 @@
         <span class="iconfont iconyiyuan"></span>
         <span class="title">医院消费项目</span>
       </div>
-      <span class="coloraeaeae">更多</span>
+      <span class="coloraeaeae" @click="moreactive">更多</span>
     </div>
     <div class="hospital-fee-content-box">
       <div class="hospital-fee-content">
@@ -93,7 +93,7 @@
         <span class="iconfont icontubiao_youhuizhekou"></span>
         <span class="title">折扣商城热销商品</span>
       </div>
-      <span class="coloraeaeae">更多</span>
+      <span class="coloraeaeae" @click='gotoactive'>更多</span>
     </div>
     <div class="bottom-box">
       <div class="list-box" v-for="item in listData" :key="item.id" @click="getDetail(item.id)">
@@ -195,6 +195,12 @@ export default {
   },
 
   methods: {
+    moreactive(){
+      this.$toast('暂未开放，敬请期待')
+    },
+    gotoactive(){
+      this.$router.push({path: '/onSale'})
+    },
     declaration() {
       this.$router.push({ path: "/declaration" });
     },
